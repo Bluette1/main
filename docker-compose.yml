@@ -3,13 +3,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: 'python main.py'
     ports:
       - 8001:5000
     networks:
-      - default
+      - shared_network
     volumes:
       - .:/app
 
+    depends_on:
+      - db
+  
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'python consumer.py'
+    networks:
+      - shared_network
     depends_on:
       - db
 
@@ -19,15 +30,15 @@ services:
     environment:
       MYSQL_PORT: 3306
       MYSQL_DATABASE: main
-      # MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - .dbdata:/var/lib/mysql
     ports:
       - 33067:3306
     networks:
-      - default
+      - shared_network
 
 networks:
-  admin_default:
+  shared_network:
+    external: true
     driver: bridge
