@@ -1,5 +1,4 @@
-import json
-import pika
+import json, pika
 from main import Product, db, app
 
 params = pika.URLParameters('amqps://airxfsao:W5tmIncTdIhXialDQB-ExXj-jMEBc1Iu@armadillo.rmq.cloudamqp.com/airxfsao')
